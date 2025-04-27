@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องคำนวณอัตราแลกเปลี่ยน Fcoin</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+            background-color: #f7f9fc;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+        .calculator {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid #eaeaea;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            width: 120px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 200px;
+            margin: 10px auto;
+            display: block;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #edf7fd;
+            border-radius: 8px;
+            font-size: 20px;
+            text-align: center;
+            border-left: 4px solid #3498db;
+            font-weight: 600;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #2c3e50;
+            color: white;
+            font-weight: 500;
+        }
+        td {
+            border-bottom: 1px solid #eee;
+            padding: 10px 8px;
+            text-align: center;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        .highlight {
+            color: #1e88e5;
+            font-weight: bold;
+        }
+        .rate-highlight {
+            color: #8e24aa;
+            font-weight: bold;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 40px;
+            font-size: 22px;
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 10px;
+        }
+        #colorBest {
+            background-color: #e3f2fd;
+            font-weight: bold;
+        }
+        .explainer {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>เครื่องคำนวณอัตราแลกเปลี่ยน Fcoin</h1>
+    
+    <div class="calculator">
+        <div class="input-group">
+            <label for="fcoinRate">อัตราแลกเปลี่ยน: 1,000 Fcoin = </label>
+            <input type="number" id="fcoinRate" placeholder="ใส่จำนวน m" value="80">
+            <span> m</span>
+        </div>
+        
+        <button onclick="calculateRates()">คำนวณ</button>
+        
+        <div class="result" id="result">
+            1 m = ... บาท
+        </div>
+    </div>
+    
+    <h2>ตารางรายละเอียดแพ็คเกจ - Mycard</h2>
+    <p class="explainer">ยิ่งค่า <strong>THB / m</strong> ต่ำ ยิ่งคุ้ม (ราคาบาท:1m)</p>
+    <table id="fcoinsTable">
+        <thead>
+            <tr>
+                <th>แพ็คเกจ</th>
+                <th>โบนัส</th>
+                <th>รวม fCoins</th>
+                <th>THB</th>
+                <th>1,000Fcoins / THB</th>
+                <th>THB / m</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>MyCard 500 fCoins</td>
+                <td></td>
+                <td class="highlight">500</td>
+                <td>151</td>
+                <td class="rate-highlight">302.00</td>
+                <td id="m-rate-0"></td>
+            </tr>
+            <tr>
+                <td>MyCard 1,030 fCoins</td>
+                <td>+50 Free</td>
+                <td class="highlight">1080</td>
+                <td>311</td>
+                <td class="rate-highlight">287.96</td>
+                <td id="m-rate-1"></td>
+            </tr>
+            <tr>
+                <td>MyCard 2,210 fCoins</td>
+                <td>+165 Free</td>
+                <td class="highlight">2375</td>
+                <td>667</td>
+                <td class="rate-highlight">280.84</td>
+                <td id="m-rate-2"></td>
+            </tr>
+            <tr>
+                <td>MyCard 2,945 fCoins</td>
+                <td>+295 Free</td>
+                <td class="highlight">3240</td>
+                <td>890</td>
+                <td class="rate-highlight">274.69</td>
+                <td id="m-rate-3"></td>
+            </tr>
+            <tr>
+                <td>MyCard 4,980 fCoins</td>
+                <td>+620 Free</td>
+                <td class="highlight">5600</td>
+                <td>1504</td>
+                <td class="rate-highlight">268.57</td>
+                <td id="m-rate-4"></td>
+            </tr>
+            <tr>
+                <td>MyCard 9,690 fCoins</td>
+                <td>+1450 Free</td>
+                <td class="highlight">11140</td>
+                <td>2928</td>
+                <td class="rate-highlight">262.84</td>
+                <td id="m-rate-5"></td>
+            </tr>
+            <tr>
+                <td>MyCard 14,500 fCoins</td>
+                <td>+2175 Free</td>
+                <td class="highlight">16675</td>
+                <td>4450</td>
+                <td class="rate-highlight">266.87</td>
+                <td id="m-rate-6"></td>
+            </tr>
+            <tr>
+                <td>MyCard 29,000 fCoins</td>
+                <td>+5800 Free</td>
+                <td class="highlight">34800</td>
+                <td>8900</td>
+                <td class="rate-highlight">255.75</td>
+                <td id="m-rate-7"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // คำนวณค่าเริ่มต้นตอนโหลดหน้า
+        window.onload = function() {
+            calculateRates();
+        };
+        
+        function calculateRates() {
+            const fcoinRate = parseFloat(document.getElementById('fcoinRate').value);
+            if (!fcoinRate || fcoinRate <= 0) {
+                alert('กรุณาใส่อัตราแลกเปลี่ยนที่ถูกต้อง');
+                return;
+            }
+            
+            // คำนวณว่า 1 m = กี่บาท (ใช้ข้อมูลจากแพ็คเกจใหญ่สุด)
+            const fcoinTotal = 34800; // total fcoin จากแพ็คเกจใหญ่สุด
+            const thbTotal = 8900;    // ราคาในบาท
+            
+            // ขั้นตอนการคำนวณ
+            // 1. คำนวณ m ที่ได้จากแพ็คเกจ
+            const mTotal = fcoinTotal / 1000 * fcoinRate; // จำนวน m ทั้งหมด
+            // 2. คำนวณราคาต่อ 1 m
+            const thbPerM = thbTotal / mTotal; // บาทต่อ 1 m
+            
+            document.getElementById('result').innerHTML = `
+                1 m = ${thbPerM.toFixed(2)} บาท<br>
+                <span style="font-size: 14px; font-weight: normal;">(คำนวณจากอัตรา 1,000 Fcoin = ${fcoinRate} m)</span>
+            `;
+            
+            // คำนวณอัตราแลกเปลี่ยน THB / m สำหรับทุกแพ็คเกจในตาราง
+            const rows = document.getElementById('fcoinsTable').getElementsByTagName('tbody')[0].rows;
+            const fcoins = [500, 1080, 2375, 3240, 5600, 11140, 16675, 34800];
+            const thbs = [151, 311, 667, 890, 1504, 2928, 4450, 8900];
+            
+            // เก็บค่า THB / m ทั้งหมดเพื่อหาค่าต่ำสุด (คุ้มสุด)
+            let thbPerMValues = [];
+            
+            for (let i = 0; i < rows.length; i++) {
+                // คำนวณจำนวน m ที่ได้จากแต่ละแพ็คเกจ
+                const m = fcoins[i] / 1000 * fcoinRate;
+                // คำนวณราคาบาทต่อ 1 m
+                const thbPerM = thbs[i] / m;
+                document.getElementById(`m-rate-${i}`).innerHTML = thbPerM.toFixed(4);
+                thbPerMValues.push({ index: i, value: thbPerM });
+            }
+            
+            // หาแพ็คเกจที่คุ้มค่าที่สุด (THB/m ต่ำสุด)
+            thbPerMValues.sort((a, b) => a.value - b.value);
+            const bestPackageIndex = thbPerMValues[0].index;
+            
+            // ล้างสีพื้นหลังของทุกแถว
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].removeAttribute('id');
+            }
+            
+            // ทำไฮไลท์แพ็คเกจที่คุ้มที่สุด
+            rows[bestPackageIndex].id = 'colorBest';
+        }
+    </script>
+</body>
+</html>
